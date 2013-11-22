@@ -268,11 +268,17 @@ ifdef LOCAL_EXPORT_PACKAGE_RESOURCES
 resource_export_package := $(intermediates.COMMON)/package-export.apk
 $(R_file_stamp): $(resource_export_package)
 
+ifeq (, $(ONE_SHOT_MAKEFILE))
+ifeq ($(LOCAL_PACKAGE_NAME), framework-smartisanos-res)
+pre := $(call intermediates-dir-for,APPS,framework-res,,COMMON)/package-export.apk
+endif
+endif
+
 # add-assets-to-package looks at PRODUCT_AAPT_CONFIG, but this target
 # can't know anything about PRODUCT.  Clear it out just for this target.
 $(resource_export_package): PRIVATE_PRODUCT_AAPT_CONFIG :=
 $(resource_export_package): PRIVATE_PRODUCT_AAPT_PREF_CONFIG :=
-$(resource_export_package): $(all_res_assets) $(full_android_manifest) $(RenderScript_file_stamp) $(AAPT)
+$(resource_export_package): $(all_res_assets) $(full_android_manifest) $(RenderScript_file_stamp) $(AAPT) $(pre)
 	@echo "target Export Resources: $(PRIVATE_MODULE) ($@)"
 	$(create-empty-package)
 	$(add-assets-to-package)
@@ -326,13 +332,26 @@ framework_res_package_export := \
 framework_res_package_export_deps := \
     $(dir $(framework_res_package_export))src/R.stamp
 endif # LOCAL_SDK_RES_VERSION
+
+ifeq ($(LOCAL_USE_FRAMEWORK_SMARTISANOS),true)
+framework_smartisanos_res_package_export := \
+	$(call intermediates-dir-for,APPS,framework-smartisanos-res,,COMMON)/package-export.apk
+framework_smartisanos_res_package_export_deps := \
+	$(dir $(framework_smartisanos_res_package_export))src/R.stamp
+else
+framework_smartisanos_res_package_export :=
+framework_smartisanos_res_package_export_deps :=
+endif # LOCAL_USE_FRAMEWORK_SMARTISANOS
+
 all_library_res_package_exports := \
     $(framework_res_package_export) \
+    $(framework_smartisanos_res_package_export) \
     $(foreach lib,$(LOCAL_RES_LIBRARIES),\
         $(call intermediates-dir-for,APPS,$(lib),,COMMON)/package-export.apk)
 
 all_library_res_package_export_deps := \
     $(framework_res_package_export_deps) \
+    $(framework_smartisanos_res_package_export_deps) \
     $(foreach lib,$(LOCAL_RES_LIBRARIES),\
         $(call intermediates-dir-for,APPS,$(lib),,COMMON)/src/R.stamp)
 

@@ -41,6 +41,10 @@ else
   endif
 endif
 
+ifeq ($(LOCAL_USE_FRAMEWORK_SMARTISANOS), true)
+LOCAL_JAVA_LIBRARIES := smartisanos $(LOCAL_JAVA_LIBRARIES)
+endif
+
 proto_sources := $(filter %.proto,$(LOCAL_SRC_FILES))
 ifneq ($(proto_sources),)
 ifeq ($(LOCAL_PROTOC_OPTIMIZE_TYPE),micro)

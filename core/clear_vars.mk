@@ -2,6 +2,7 @@
 ## Clear out values of all variables used by rule templates.
 ###########################################################
 
+LOCAL_USE_FRAMEWORK_SMARTISANOS :=
 LOCAL_MODULE:=
 LOCAL_MODULE_PATH:=
 LOCAL_MODULE_RELATIVE_PATH :=

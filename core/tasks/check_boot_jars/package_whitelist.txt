@@ -176,6 +176,10 @@ javax\.microedition\.khronos\.egl
 
 android
 
+# smartisanos.jar
+smartisanos
+smartisanos\..*
+com\.smartisanos\..*
 
 ###################################################
 # telephony-common.jar
