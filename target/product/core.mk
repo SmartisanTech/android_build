@@ -54,6 +54,7 @@ PRODUCT_PACKAGES += \
     TeleService \
     VpnDialogs \
     MmsService \
+    Sidebar \
     framework-smartisanos-res \
     smartisanos
 
